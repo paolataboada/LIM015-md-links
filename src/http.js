@@ -3,7 +3,7 @@ const http = require('http');
 const handlerServer = (request, response) => {
     response.writeHead(200, { 'Content-type': 'text/html' })
     // response.writeHead(404, { 'Content-type': 'text/html' })
-    response.write('<h1>Hola Mundo desde Nodejs</h1>');
+    response.write('<h1>Hola Mundo desde NodeJS</h1>');
     response.end();
 }
 

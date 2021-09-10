@@ -8,7 +8,7 @@ fs.writeFile('./src/texto.txt', 'Escribiendo en el archivo creado :3', (error) =
     }
 });
 
-fs.readFile('./texto.txt', (error, data) => {
+fs.readFile('./src/texto.txt', (error, data) => {
     if (error) {
         console.log(error);
     } else {

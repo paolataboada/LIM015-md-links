@@ -1,4 +1,7 @@
+// Desde este archivo debes exportar una función (mdLinks).
+
 module.exports = () => {
   // ...
 };
-let ho = 1;
+
+console.log("hola desde la consola")
