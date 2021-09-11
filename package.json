@@ -1,5 +1,5 @@
 {
-  "name": "md-links",
+  "name": "@paolataboada/md-links",
   "version": "0.1.0",
   "description": "Este proyecto consiste en la creación de una herramienta de línea de comando (CLI) así como de una librería propia (o biblioteca - library) en JavaScript.",
   "main": "index.js",
@@ -8,8 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint \"src/**/*.js\"",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "peticion": "node src/http.js",
+    "lectura": "node src/fs.js"
   },
   "repository": {
     "type": "git",
@@ -17,13 +18,12 @@
   },
   "keywords": [
     "md-links",
-    "node",
     "cli",
     "api",
-    "status",
-    "path"
+    "path",
+    "status"
   ],
-  "author": "Paola Vitalia Taboada Alanoca",
+  "author": "Paola Taboada <taboadapaola3@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/paolataboada/LIM015-md-links/issues"
@@ -33,6 +33,5 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2"
-  },
-  "dependencies": {}
+  }
 }
