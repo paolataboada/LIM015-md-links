@@ -15,18 +15,6 @@ if (path.isAbsolute(pathAbsolute)) {
     console.log('La ruta no se puede convertir')
 }
 
-// Averigua si la extensión es markdown
-const extension = path.parse(pathRelative).ext
-if (extension === '.md') {
-    fs.readFile(pathRelative, 'utf-8', (err, data) => {
-        if (err) {
-            throw err
-        } else {
-            // console.log(data)
-        }
-    })
-}
-
 // Obtiene el contenido de un directorio
 fs.readdir(pathAbsolute, 'utf-8', (err, file) => {
     if (err) {
@@ -35,3 +23,18 @@ fs.readdir(pathAbsolute, 'utf-8', (err, file) => {
         console.log(file)
     }
 })
+
+// Averigua si la extensión es markdown
+const extension = path.parse(pathRelative).ext
+if (extension === '.md') {
+    // Lee el archivo markdown
+    fs.readFile(pathRelative, 'utf-8', (err, data) => {
+        if (err) {
+            throw err
+        } else {
+            console.log(data)
+        }
+    })
+} else {
+    console.log('Este no es un archivo markdown')
+}
