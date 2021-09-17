@@ -1,9 +1,8 @@
 const path = require('path')
 const fs = require('fs')
 
-const pathAbsolute = 'C:/Users/TACNA/Documents/GitHub/LIM015-md-links/src'
-const pathRelative = 'src/example.md'
-
+const pathAbsolute = __dirname;
+const pathRelative = 'new_directory/inspectMe.md';
 // console.log(path.isAbsolute(pathAbsolute)) // Retorna booleano
 // console.log(path.parse(pathRelative))
 
@@ -16,11 +15,11 @@ if (path.isAbsolute(pathAbsolute)) {
 }
 
 // Obtiene el contenido de un directorio
-fs.readdir(pathAbsolute, 'utf-8', (err, file) => {
+fs.readdir(pathAbsolute, 'utf-8', (err, files) => {
     if (err) {
-        console.log(err)
+        console.log('OCURRIÓ UN ERROR!', err)
     } else {
-        console.log(file)
+        console.log(files)
     }
 })
 
@@ -30,7 +29,7 @@ if (extension === '.md') {
     // Lee el archivo markdown
     fs.readFile(pathRelative, 'utf-8', (err, data) => {
         if (err) {
-            throw err
+            console.log('OH NO! HA SUCEDIDO!', err)
         } else {
             console.log(data)
         }
@@ -38,3 +37,7 @@ if (extension === '.md') {
 } else {
     console.log('Este no es un archivo markdown')
 }
+
+// Une rutas
+const pathUnion = path.join(__dirname, 'hola', 'esta', 'es', 'una', 'fusión', '.txt');
+console.log(pathUnion)
