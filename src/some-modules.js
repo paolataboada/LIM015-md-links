@@ -38,4 +38,4 @@ if (extension === '.md') {
 
 // Une rutas
 const pathUnion = path.join(__dirname, 'hola', 'esta', 'es', 'una', 'fusión', '.txt');
-// console.log(pathUnion)
+console.log(pathUnion)
