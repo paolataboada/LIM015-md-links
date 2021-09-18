@@ -2,16 +2,14 @@ const path = require('path')
 const fs = require('fs')
 
 const pathAbsolute = __dirname;
-const pathRelative = 'new_directory/inspectMe.md';
-// console.log(path.isAbsolute(pathAbsolute)) // Retorna booleano
-// console.log(path.parse(pathRelative))
+const pathRelative = 'src/new_directory/inspectMe.md';
 
-// Transforma ruta absoluta a ruta relativa
-if (path.isAbsolute(pathAbsolute)) {
-    const pathConverted = path.resolve(pathAbsolute)
-    console.log('La ruta convertida es:', pathConverted)
+// Transforma ruta relativa a ruta absoluta
+if (!path.isAbsolute(pathRelative)) {
+    const pathConverted = path.resolve(pathRelative)
+    console.log('Se transformó a ruta absoluta:', pathConverted)
 } else {
-    console.log('La ruta no se puede convertir')
+    console.log('Esta ya es una ruta absoluta:', pathRelative)
 }
 
 // Obtiene el contenido de un directorio
@@ -19,7 +17,7 @@ fs.readdir(pathAbsolute, 'utf-8', (err, files) => {
     if (err) {
         console.log('OCURRIÓ UN ERROR!', err)
     } else {
-        console.log(files)
+        // console.log(files)
     }
 })
 
@@ -31,7 +29,7 @@ if (extension === '.md') {
         if (err) {
             console.log('OH NO! HA SUCEDIDO!', err)
         } else {
-            console.log(data)
+            // console.log(data)
         }
     })
 } else {
@@ -40,4 +38,4 @@ if (extension === '.md') {
 
 // Une rutas
 const pathUnion = path.join(__dirname, 'hola', 'esta', 'es', 'una', 'fusión', '.txt');
-console.log(pathUnion)
+// console.log(pathUnion)
