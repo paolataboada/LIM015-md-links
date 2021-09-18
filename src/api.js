@@ -1,41 +1,66 @@
 const path = require('path')
 const fs = require('fs')
 
-const pathAbsolute = __dirname;
-const pathRelative = 'src/new_directory/inspectMe.md';
+// Rutas de ejemplo
+const dir = 'src/new_directory'
+const file = 'src/new_directory/inspectMe.md'
+
+// Comprueba si la ruta existe
+const pathExists = (dirExample) => {
+    if (fs.existsSync(dirExample)) { // retorna booleano
+        console.log('Esta ruta existe:', dirExample);
+    } else {
+        console.log(`La ruta '${dirExample}' no existe.`)
+    }
+}
+pathExists(dir)
 
 // Transforma ruta relativa a ruta absoluta
-if (!path.isAbsolute(pathRelative)) {
-    const pathConverted = path.resolve(pathRelative)
-    console.log('Se transformó a ruta absoluta:', pathConverted)
-} else {
-    console.log('Esta ya es una ruta absoluta:', pathRelative)
-}
-
-// Obtiene el contenido de un directorio
-fs.readdir(pathAbsolute, 'utf-8', (err, files) => {
-    if (err) {
-        console.log('OCURRIÓ UN ERROR!', err)
+const convertPath = (dirExample) => {
+    if (!path.isAbsolute(dirExample)) {
+        const pathConverted = path.resolve(dirExample)
+        console.log('Se transformó a ruta absoluta:', pathConverted)
     } else {
-        // console.log(files)
+        console.log('Esta ya es una ruta absoluta:', pathExample)
     }
-})
+}
+convertPath(dir)
 
-// Averigua si la extensión es markdown
-const extension = path.parse(pathRelative).ext
-if (extension === '.md') {
-    // Lee el archivo markdown
-    fs.readFile(pathRelative, 'utf-8', (err, data) => {
+// Averigua si es archivo o carpeta
+const hasExtension = (fileExample) => {
+    if (path.parse(fileExample).ext === '.md') {
+        console.log(path.parse(fileExample).ext);
+    } else {
+        console.log('Este no es un archivo md, se asume que es carpeta u otro tipo de archivo')
+        if (path.parse(fileExample)) {
+            console.log('Archivo excluido')
+        } else {
+            console.log('Leer directorio')
+        }
+    }
+}
+hasExtension(file)
+
+// Lee el archivo markdown
+const readFile = (fileExample) => {
+    fs.readFile(fileExample, 'utf-8', (err, data) => {
         if (err) {
             console.log('OH NO! HA SUCEDIDO!', err)
         } else {
-            // console.log(data)
+            console.log(data)
         }
     })
-} else {
-    console.log('Este no es un archivo markdown')
 }
+readFile(file) 
 
-// Une rutas
-const pathUnion = path.join(__dirname, 'hola', 'esta', 'es', 'una', 'fusión', '.txt');
-// console.log(pathUnion)
+// Obtiene el contenido de un directorio
+const readDir = (dirExample) => {
+    fs.readdir(dirExample, (err, files) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(files)
+        }
+    })
+}
+readDir(dir)
