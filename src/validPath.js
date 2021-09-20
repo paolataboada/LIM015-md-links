@@ -6,17 +6,21 @@ const objOfPaths = {
     directory: 'src/new_directory',
     fileMd: 'src/new_directory/toRead.md',
     difFile: 'src/new_directory/cheat.txt',
-    wrongPath: 'src/assets/flowchart.jpg'
+    wrongPath: 'src/assets/flowchart.jpg',
+    absolPath: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\cheat.txt'
 }
 
 const validPath = (path) => {
     if (api.pathExists(path)) {
-        console.log('Ruta válida:', path)
-        api.convertPath(path).then((pathConverted) => {
-            console.log('Ruta convertida:', pathConverted)
-        }).catch((err) => { throw (err)})
+        const dirOrFile = api.hasExtension(api.convertPath(path))
+        if (typeof dirOrFile === 'string') {
+            return api.readFile(dirOrFile)
+        } else {
+            return dirOrFile
+        }
     } else {
-        console.log('Ruta inexistente', path)
+        const nonexistentPath = 'Ruta inexistente'
+        return nonexistentPath
     }
 }
-validPath(objOfPaths.fileMd)
+console.log(validPath(objOfPaths.fileMd))

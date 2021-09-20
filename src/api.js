@@ -16,84 +16,63 @@ const pathExists = (dirExample) => {
 
 // Transforma ruta relativa a ruta absoluta
 const convertPath = (dirExample) => {
-    return new Promise((resolve, reject) => {
-        if (!path.isAbsolute(dirExample)) {
-            // const pathConverted = path.resolve(dirExample)
-            // console.log('Se transformó a ruta absoluta:', pathConverted)
-            return resolve(path.resolve(dirExample))
+    return path.resolve(dirExample)
+    // return new Promise((resolve, reject) => {
+        /* if (!path.isAbsolute(dirExample)) {
+            console.log(path.resolve(dirExample));
+            return path.resolve(dirExample)
         } else {
-            // console.log('Esta ya es una ruta absoluta:', dirExample)
-            return reject('Esta ya es una ruta absoluta:')
-        }
-    })
+            console.log('con', path.resolve(dirExample));
+            console.log('dif', dirExample);
+            // return dirExample
+        } */
+    // })
 }
-// convertPath('C:/Users/TACNA/Documents/GitHub/LIM015-md-links/src/new_directory')
+// convertPath('src/new_directory')
 
 // Expresión regular para validar una url
 const regExp = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g
 
 // Lee el archivo markdown
 const readFile = (fileExample) => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(fileExample, 'utf-8', (err, data) => {
-            let arrayLinks;
-            if (err) {
-                return reject(err)
-            } else {
-                // console.log(data)
-                return resolve(data)
-                /* const similarPatterns = data.match(regExp);
-                arrayLinks = (similarPatterns);
-                console.log(`Este es un array con ${arrayLinks.length} links:`, arrayLinks); */
-            }
-        })
-    })
+    // return new Promise((resolve, reject) => {
+        return fs.readFileSync(fileExample, 'utf-8')
+    // })
 }
-// readFile(file)
+// console.log(readFile(file))
 
 // Obtiene el contenido de un directorio
 const readDir = (dirExample) => {
-    return new Promise((resolve, reject) => {
-        fs.readdir(dirExample, (err, files) => {
-            if (err) {
-                return reject(err)
-            } else {
-                return resolve(files)
-                /* const arrayFiles = files
-                console.log(arrayFiles)
-                for (let i = 0; i < arrayFiles.length; i++) {
-                    const resultPath = path.join(dirExample, arrayFiles[i])
-                    console.log('Para leer:', resultPath)
-                } */
-            }
-        })
-    })
+    // return new Promise((resolve, reject) => {
+        return fs.readdirSync(dirExample, 'utf-8')
+    // })
 }
-// readDir(dir)
+// console.log(readDir(dir));
 
 // Averigua si es archivo o carpeta
 const hasExtension = (fileExample) => {
     if (path.parse(fileExample).ext) {
         const typeFile = path.parse(fileExample).ext
-        console.log(typeFile);
+        // console.log(typeFile);
         if(typeFile !== '.md') {
-            console.log('Archivo excluido :P')
+            const noMd = 'Archivo excluido :P';
+            return noMd
+            // console.log('Archivo excluido :P')
         } else {
-            console.log('Este archivo md sí puede leerse')
+            // const yesMd = 'Este archivo md sí puede leerse'
+            return fileExample // readFile(fileExample)
+            // console.log('Este archivo md sí puede leerse')
             // readFile(fileExample)
         }
     } else {
-        console.log('Leer directorio', fileExample)
+        // console.log('Leer directorio', fileExample)
         // readDir(fileExample)
-        const result = 'Es un directorio'
-        return result
+        // const result = 'Es un directorio'
+        // const dirContent = readDir(fileExample)
+        return /* result //  */readDir(fileExample)
     }
 }
-// hasExtension(dir)
-
-/* exports.pathExists = pathExists;
-exports.convertPath = convertPath;
-exports.hasExtension = hasExtension; */
+// console.log(hasExtension(dir))
 
 module.exports = {
     pathExists,
