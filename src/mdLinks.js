@@ -9,7 +9,8 @@ const objOfPaths = {
     sub_FileMd: 'src/new_directory/sub_dir/sub_file.md'
 }
 
-const mdLinks = (path) => {
+const validPath = (path) => {
+    let arrFinal = [];
     if (api.pathExists(path)) {
         const toAbsolute = api.convertPath(path)
         const dirOrFile = api.hasExtension(toAbsolute) // retorna ext = file, false = directory
@@ -17,18 +18,19 @@ const mdLinks = (path) => {
             if (dirOrFile === '.md') {
                 const contentMD = api.readFile(toAbsolute)
                 const arrayLinks = api.findLinks(contentMD)
-                return arrayLinks
+                arrFinal.push(arrayLinks)
+                return arrFinal
             } else { 
                 return 'Por el momento solo revisamos archivos markdown ^^'
             }
-        } else { // dir - Obs: Puede contener files o subdirectorios
+        } else { // dir - O,bs: Puede contener files o subdirectorios
             const contentDir = api.readDir(toAbsolute) // es un array
             contentDir.forEach((element) => {
                 const unionPath = api.joinPath(toAbsolute, element) // console.log(unionPath);
-                const recurMainFunction = mdLinks(unionPath)
-                console.log(recurMainFunction);
-                // return recurMainFunction
+                const recurMainFunction = validPath(unionPath)
+                arrFinal = arrFinal.concat(recurMainFunction)
             })
+            return arrFinal
             // return contentDir // devuelve array
         }
     } else {
@@ -36,9 +38,9 @@ const mdLinks = (path) => {
         return nonexistentPath
     }
 }
-// console.log('directorio:', mdLinks(objOfPaths.directory))
-// console.log('archivoMD_1:', mdLinks(objOfPaths.fileMd_1))
-console.log('archivoMD_2:', mdLinks(objOfPaths.fileMd_2))
-// console.log('archivoTXT:', mdLinks(objOfPaths.difFile))
-// console.log('ruta falsa:', mdLinks(objOfPaths.wrongPath))
-// console.log('sub_archivoMD:', mdLinks(objOfPaths.sub_FileMd))
+// console.log('directorio:', validPath(objOfPaths.directory))
+// console.log('archivoMD_1:', validPath(objOfPaths.fileMd_1))
+// console.log('archivoMD_2:', validPath(objOfPaths.fileMd_2))
+// console.log('archivoTXT:', validPath(objOfPaths.difFile))
+// console.log('ruta falsa:', validPath(objOfPaths.wrongPath))
+// console.log('sub_archivoMD:', validPath(objOfPaths.sub_FileMd))
