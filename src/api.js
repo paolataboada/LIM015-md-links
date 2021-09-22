@@ -23,20 +23,6 @@ const readDir = (dirExample) => fs.readdirSync(dirExample, 'utf-8') // retorna a
 // console.log(readDir(dir));
 
 // Averigua si es archivo o carpeta
-// const hasExtension = (fileExample) => {
-//     if (path.parse(fileExample).ext === '.md') {
-//         return true  // retorna true si es archivo md
-//     } else {
-//         // if (path.parse(fileExample).ext === '') {
-//             return false // retorna false si es directorio u otro tipo de archivo
-//         // } else {
-//         //     return 'Por el momento solo revisamos archivos Markdown 😅' // u otro tipo de archivo
-//         // }
-//     }
-// }
-// console.log(hasExtension('src/new_directory/for-test.txt'))
-
-// Averigua si es archivo o carpeta
 const hasExtension = (fileExample) => {
     if (path.parse(fileExample).ext !== '') {
         const typeFile = path.parse(fileExample).ext;
@@ -53,12 +39,14 @@ const joinPath = (first, last) => path.join(first, last) // retorna path unido
 
 // Expresión regular para validar una url
 const regExp = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g
-const contentFile = readFile(file)
+const contentFile = readFile('src/new_directory/sub_dir/without_url.md')
 // Encuentra los links dentro del archivo
 const findLinks = (contentExample) => {
     const patternLink = contentExample.match(regExp);
     const arrayLinks = patternLink;
-    // console.log(`Este es un array con ${arrayLinks.length} links:`, arrayLinks);
+    if (!arrayLinks) {
+        return 'No se encontraron links en el archivo' // caso: sin coincidencias
+    }
     return arrayLinks // retorna un array de links
 }
 // console.log(findLinks(contentFile));
