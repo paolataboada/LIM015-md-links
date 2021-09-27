@@ -1,4 +1,13 @@
-const http = require('http');
+// const mdLinks = require("md-links");
+
+// mdLinks("./some/example.md")
+//     .then((links) => {
+//     // => [{ href, text, file }, ...]
+//     })
+//     .catch(console.error);
+
+
+/* const http = require('http');
 
 const handlerServer = (request, response) => {
     response.writeHead(200, { 'Content-type': 'text/html' })
@@ -11,4 +20,17 @@ const server = http.createServer(handlerServer); // Una vez inicializado el serv
 
 server.listen(3000, () => {
     console.log('Server on port 3000')
+}) */
+
+const fetch = require('node-fetch')
+
+const url = fetch('https://github.com/paolataboada')
+url.then((res) => {
+    return res.json()
+}).then((json) => {
+    console.log(json)
+}).catch((err) => {
+    console.log(err)
 })
+
+// console.log(fetch);
