@@ -10,6 +10,10 @@ const dif = 'src/new_directory/cheat.txt'
 const pathExists = (dirExample) => fs.existsSync(dirExample) // retorna boolean
 // console.log(pathExists(file));
 
+// Pregunta si es una ruta absoluta
+const isAbsolute = (dirExample) => path.isAbsolute(dirExample) // retorna boolean
+// console.log(isAbsolute(dir));
+
 // Transforma ruta relativa a ruta absoluta
 const convertPath = (dirExample) => path.resolve(dirExample) // retorna ruta absoluta
 // console.log(convertPath('src/new_directory'))
@@ -60,3 +64,8 @@ module.exports = {
     joinPath,
     findLinks
 }
+
+
+console.log(65, process.cwd()); // will give you the current working directory.
+console.log(66, __dirname); // return the path of the folder where the current JavaScript file resides.
+console.log(67, __filename);
