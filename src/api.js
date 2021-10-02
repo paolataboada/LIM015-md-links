@@ -8,23 +8,18 @@ const dif = 'src/new_directory/cheat.txt'
 
 // Comprueba si la ruta existe
 const pathExists = (dirExample) => fs.existsSync(dirExample) // retorna boolean
-// console.log(pathExists(file));
 
 // Pregunta si es una ruta absoluta
 const isAbsolute = (dirExample) => path.isAbsolute(dirExample) // retorna boolean
-// console.log(isAbsolute(dir));
 
 // Transforma ruta relativa a ruta absoluta
-const convertPath = (dirExample) => path.resolve(dirExample) // retorna ruta absoluta
-// console.log(convertPath('src/new_directory'))
+const convertPath = (dirExample) => isAbsolute(dirExample) ? dirExample : path.resolve(dirExample)
 
 // Lee el archivo
 const readFile = (fileExample) => fs.readFileSync(fileExample, 'utf-8') // retorna contenido del archivo
-// console.log(readFile(file))
 
 // Obtiene el contenido de un directorio
 const readDir = (dirExample) => fs.readdirSync(dirExample, 'utf-8') // retorna array
-// console.log(readDir(dir));
 
 // Averigua si es archivo o carpeta
 const hasExtension = (fileExample) => {
@@ -35,7 +30,7 @@ const hasExtension = (fileExample) => {
         return false // retorna false si es un directorio
     }
 }
-// console.log(hasExtension('src/new_directory/for-test.txt'))
+// console.log(path.parse('src/new_directory/toRead.md').base);
 
 // Une dos pedazos de ruta
 const joinPath = (first, last) => path.join(first, last) // retorna path unido
@@ -43,7 +38,7 @@ const joinPath = (first, last) => path.join(first, last) // retorna path unido
 
 // Expresión regular para validar una url
 const regExp = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g
-const contentFile = readFile('src/new_directory/sub_dir/without_url.md')
+const contentFile = readFile('src/new_directory/toRead.md')
 // Encuentra los links dentro del archivo
 const findLinks = (contentExample) => {
     const patternLink = contentExample.match(regExp);
@@ -57,6 +52,7 @@ const findLinks = (contentExample) => {
 
 module.exports = {
     pathExists,
+    isAbsolute,
     convertPath,
     readFile,
     readDir,
@@ -65,7 +61,6 @@ module.exports = {
     findLinks
 }
 
-
-console.log(65, process.cwd()); // will give you the current working directory.
-console.log(66, __dirname); // return the path of the folder where the current JavaScript file resides.
-console.log(67, __filename);
+// console.log(65, process.cwd()); // will give you the current working directory.
+// console.log(66, __dirname); // return the path of the folder where the current JavaScript file resides.
+// console.log(67, __filename);

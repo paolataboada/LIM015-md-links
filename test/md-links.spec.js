@@ -21,6 +21,7 @@ describe('convertPath', () => {
   it('Debería convertir una ruta relativa a absoluta', () => {
     const pathAbsol = 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\cheat.txt';
     expect(api.convertPath('src/new_directory/cheat.txt')).toBe(pathAbsol)
+    expect(api.convertPath(pathAbsol)).toBe(pathAbsol)
   });
 });
 
