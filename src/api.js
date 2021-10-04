@@ -30,25 +30,73 @@ const hasExtension = (fileExample) => {
         return false // retorna false si es un directorio
     }
 }
-// console.log(path.parse('src/new_directory/toRead.md').base);
 
 // Une dos pedazos de ruta
-const joinPath = (first, last) => path.join(first, last) // retorna path unido
-// console.log(joinPath('src/new_directory', 'toRead.md'))
+const joinPath = (first, last) => path.join(first, last)
+
+/* -------------------------------------- API -------------------------------------- */
+
+// Obtiene array de rutas absolutas de archivos md
+const getFilesMd = (path) => {
+    if (pathExists(path)) {
+        const absolutePath = convertPath(path)
+        const dirOrFile = hasExtension(absolutePath) // retorna ext = file, false = directory
+            if (dirOrFile) { // ext de file - Obs: Puede ser md, txt, jpeg, png, etc.
+                if (dirOrFile === '.md') {
+                    return [absolutePath]
+                } else {
+                    return [] // 'Este no es un archivo markdown'
+                }
+            } else { // dir - Obs: Puede contener files o subdirectorios
+                const contentDir = readDir(absolutePath) // retorna un array x c/d
+                let arrayFiles = [];
+                contentDir.forEach((file) => {
+                    const unionPath = joinPath(absolutePath, file)
+                    const recurMainFunction = getFilesMd(unionPath)
+                    arrayFiles = arrayFiles.concat(recurMainFunction)
+                })
+                return arrayFiles
+            }
+    } else {
+        return 'Ruta inexistente'
+    }
+}
+console.log('directorio:', getFilesMd(dir))
+// console.log('archivoMD_1:', getFilesMd(file))
+// console.log('archivoTXT:', getFilesMd(dif))
 
 // Expresión regular para validar una url
-const regExp = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g
-const contentFile = readFile('src/new_directory/toRead.md')
-// Encuentra los links dentro del archivo
-const findLinks = (contentExample) => {
-    const patternLink = contentExample.match(regExp);
-    const arrayLinks = patternLink;
-    if (!arrayLinks) {
-        return 'No se encontraron links en el archivo' // caso: sin coincidencias
-    }
-    return arrayLinks // retorna un array de links
+const regExpLink = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g
+const regExpText = /\[([\w\s\d\-+&#/\.]+)\]/g
+const fullRegExp = /\[(.+?)\]\((https?.+?)\)/g
+
+const readFilesMd = (path) => {  // TODO: Revisar función getFilesMd() porque no lee archivo deep.md
+    const arrayLinks = [];
+    const propertiesLinks = {}
+    getFilesMd(path).forEach((md) => { 
+        const contentFile = readFile(md);
+        const fullLinks = contentFile.match(fullRegExp)
+        if (fullLinks) {
+            console.log(80, fullLinks);
+            fullLinks.forEach((link) => {
+                const href = link.match(regExpLink).join();
+                const text = link.match(regExpText).join().slice(1, -1);
+                // text = text.substr(1, text.length-2)
+                const propertiesLinks = {
+                    href,
+                    text,
+                    file: path
+                };
+                arrayLinks.push(propertiesLinks)
+            });
+            return arrayLinks
+        } else { // caso: null
+            return 'No hay links en el archivo'
+        }
+    })
+    return arrayLinks
 }
-// console.log(findLinks(contentFile));
+// console.log(readFilesMd(dir));
 
 module.exports = {
     pathExists,
@@ -57,8 +105,7 @@ module.exports = {
     readFile,
     readDir,
     hasExtension,
-    joinPath,
-    findLinks
+    joinPath
 }
 
 // console.log(65, process.cwd()); // will give you the current working directory.

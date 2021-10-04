@@ -10,19 +10,6 @@ const objOfPaths = {
     sub_FileMd: 'src/new_directory/sub_dir/sub_file.md'
 }
 
-// mdLinks("./some/example.md")
-//   .then((links) => {
-//     // => [{ href, text, file }, ...]
-//   })
-//   .catch(console.error);
-
-// La función debe retornar una promesa (Promise) que resuelva a un arreglo (Array) de objetos (Object), 
-// donde cada objeto representa un link y contiene las siguientes propiedades:
-// Con validate:false
-// href: URL encontrada.
-// text: Texto que aparecía dentro del link (<a>).
-// file: Ruta del archivo donde se encontró el link.
-
 const pathReader = (path) => {
     let arrFinal = [];
     if (api.pathExists(path)) {
@@ -32,10 +19,13 @@ const pathReader = (path) => {
             let properLink = {}
             if (dirOrFile) { // ext de file - Obs: Puede ser md, txt, jpeg, png, etc.
                 if (dirOrFile === '.md') {
-                    const contentMD = api.readFile(toAbsolute)
-                    const arrayLinks = api.findLinks(contentMD)
-                    arrFinal = arrFinal.concat(arrayLinks)
+                    // const contentMD = api.readFile(toAbsolute)
+                    // const arrayLinks = api.findLinks(toAbsolute)
+                    // console.log(37, arrayLinks);
+                    arrFinal = arrFinal.concat(api.findLinks(toAbsolute))
+                    console.log(39, arrFinal);
                     arrFinal.forEach((el) => {
+                        // console.log(40, toAbsolute+el);
                         properLink.href = el,
                         properLink.file = toAbsolute
                     })
@@ -66,5 +56,20 @@ const pathReader = (path) => {
         return 'Ruta inexistente'
     }
 }
-console.log('directorio:', pathReader(objOfPaths.directory))
+// console.log('directorio:', pathReader(objOfPaths.directory))
 // console.log('archivoMD_1:', pathReader(objOfPaths.fileMd_1))
+// console.log('archivoMD_1:', getFilesMd(objOfPaths.difFile))
+
+// Esta f viene del api.js
+// Expresión regular para validar una url
+const regExp = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g
+const contentFile = readFile('src/new_directory/toRead.md')
+// Encuentra los links dentro del archivo
+const findLinks = (contentExample) => {
+    const patternLink = contentExample.match(regExp);
+    const arrayLinks = patternLink;
+    if (!arrayLinks) {
+        return 'No se encontraron links en el archivo' // caso: sin coincidencias
+    }
+    return arrayLinks // retorna un array de links
+}
