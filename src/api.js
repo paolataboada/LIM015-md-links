@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const fetch = require('node-fetch')
 
 // Rutas de ejemplo
 const dir = 'src/new_directory'
@@ -52,8 +53,8 @@ const getFilesMd = (path) => {
                 let arrayFiles = [];
                 contentDir.forEach((file) => {
                     const unionPath = joinPath(absolutePath, file)
-                    const recurMainFunction = getFilesMd(unionPath)
-                    arrayFiles = arrayFiles.concat(recurMainFunction)
+                    const recurFunction = getFilesMd(unionPath)
+                    arrayFiles = arrayFiles.concat(recurFunction)
                 })
                 return arrayFiles
             }
@@ -61,42 +62,98 @@ const getFilesMd = (path) => {
         return 'Ruta inexistente'
     }
 }
-console.log('directorio:', getFilesMd(dir))
+// console.log('directorio:', getFilesMd(dir))
 // console.log('archivoMD_1:', getFilesMd(file))
 // console.log('archivoTXT:', getFilesMd(dif))
 
 // Expresión regular para validar una url
-const regExpLink = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g
-const regExpText = /\[([\w\s\d\-+&#/\.]+)\]/g
-const fullRegExp = /\[(.+?)\]\((https?.+?)\)/g
+const regExpLink = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g;
+const regExpText = /\[([\w\s\d\-+&#/\.[áéíóú]+)\]/g;
+const fullRegExp = /\[(.+?)\]\((https?.+?)\)/g;
 
-const readFilesMd = (path) => {  // TODO: Revisar función getFilesMd() porque no lee archivo deep.md
+// Obtiene array de objetos con propiedades de los links
+const readFilesMd = (path) => {
     const arrayLinks = [];
-    const propertiesLinks = {}
-    getFilesMd(path).forEach((md) => { 
-        const contentFile = readFile(md);
+    getFilesMd(path).forEach((mdPath) => { 
+        const contentFile = readFile(mdPath);
         const fullLinks = contentFile.match(fullRegExp)
         if (fullLinks) {
-            console.log(80, fullLinks);
             fullLinks.forEach((link) => {
                 const href = link.match(regExpLink).join();
                 const text = link.match(regExpText).join().slice(1, -1);
-                // text = text.substr(1, text.length-2)
                 const propertiesLinks = {
                     href,
                     text,
-                    file: path
+                    file: mdPath
                 };
                 arrayLinks.push(propertiesLinks)
             });
             return arrayLinks
-        } else { // caso: null
-            return 'No hay links en el archivo'
+        } else { // caso: null // TODO: Revisar si es necesario el condicional
+            const propertiesLinks = {
+                href: 'No se encontraron links en el archivo',
+                file: mdPath
+            };
+            arrayLinks.push(propertiesLinks)
+            return arrayLinks
         }
     })
     return arrayLinks
 }
-// console.log(readFilesMd(dir));
+// console.log(readFilesMd('src/new_directory'));
+
+const fetchLinks = (link) => {
+    const result = 
+    fetch(link.href).then((res) => {
+        const propertiesStatus = {
+            href: link.href,
+            text: link.text,
+            file: link.file,
+            stats: res.status,
+            case: res.ok ? 'ok' : 'fail'
+        }
+        return propertiesStatus
+        }).catch((err) => {
+            const propertiesStatus = {
+                href: link.href,
+                file: link.file,
+                stats: 400,
+                case: 'fail'
+            }
+            return propertiesStatus
+        })
+    return result
+}
+
+const fetchStatus = (path) => {
+    const resultArray = readFilesMd(path);
+    const arrayLinks = resultArray.map((link) => {
+        const resultFetch = 
+        fetch(link.href).then((res) => {
+            const propertiesStatus = {
+                href: link.href,
+                text: link.text,
+                file: link.file,
+                stats: res.status,
+                case: res.ok ? 'ok' : 'fail'
+            }
+            return propertiesStatus
+            }).catch((err) => {
+                const propertiesStatus = {
+                    href: link.href,
+                    file: link.file,
+                    stats: 400,
+                    case: 'fail',
+                }
+                return propertiesStatus
+            })
+        return resultFetch
+    })
+    return Promise.all(arrayLinks)
+}
+// fetchStatus(dir)
+// .then((resp) => console.log(155, resp))
+// .catch((err) => console.log(156, err))
 
 module.exports = {
     pathExists,
@@ -105,9 +162,14 @@ module.exports = {
     readFile,
     readDir,
     hasExtension,
-    joinPath
+    joinPath,
+    getFilesMd,
+    readFilesMd,
+    fetchLinks,
+    fetchStatus
 }
 
 // console.log(65, process.cwd()); // will give you the current working directory.
 // console.log(66, __dirname); // return the path of the folder where the current JavaScript file resides.
 // console.log(67, __filename);
+

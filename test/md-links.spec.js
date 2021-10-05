@@ -9,7 +9,6 @@ const api = require('../src/api')
 
 }); */
 
-// TODO: Ordenar los test {describe(function,callback)}
 describe('pathExists', () => {
   it('Debería validar si la ruta existe', () => {
     expect(api.pathExists('src/new_directory/cheat.txt')).toBeTruthy()
@@ -62,15 +61,65 @@ describe('joinPath', () => {
   });
 });
 
-describe('findLinks', () => {
-  it('Debería encontrar links en el contenido de un archivo md', () => {
-    const fileWithURL = api.readFile('src/new_directory/toRead.md');
+describe('getFilesMd', () => {
+  it('Debería guardar solo archivos md en un array', () => {
+    const pathWithMd = api.getFilesMd('src/new_directory');
+    const pathWithoutMd = api.getFilesMd('src/empty_dir');
+    const pathWrong = api.getFilesMd('src/new_cheat.nd');
+    const arrayMd = [ 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\inspectMe.md',
+                      'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\inner_dir\\deep.md',
+                      'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\sub_file.md',
+                      'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\without_url.md',
+                      'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\toRead.md' ]
+    expect(pathWithMd).toEqual(arrayMd)
+    expect(pathWithoutMd).toEqual([])
+    expect(pathWrong).toEqual('Ruta inexistente')
+  });
+});
+
+describe('readFilesMd', () => {
+  it('Debería guardar en un array los objetos con propiedades de los links', () => {
+    const getProperties = api.readFilesMd('src/new_directory/sub_dir/inner_dir/deep.md');
+    const noProperties = api.readFilesMd('src/new_directory/sub_dir/without_url.md');
+    const propLinks = [{
+                        href: 'https://app.creately.com/diagram/l7cKUOg4XC0/edit',
+                        text: 'Proyecto mdLinks',
+                        file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\inner_dir\\deep.md'    
+                      },
+                      {
+                        href: 'https://domain.invalid/',
+                        text: 'Invalid Domain',
+                        file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\inner_dir\\deep.md'    
+                      }]
+    const noPropLinks = [{
+                          href: 'No se encontraron links en el archivo',
+                          file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\without_url.md'
+                        }]
+    expect(getProperties).toEqual(propLinks)
+    expect(noProperties).toEqual(noPropLinks)
+  });
+});
+
+describe('fetchLinks', () => {
+  it('Debería guardar solo archivos md en un array', () => {
+    const fileWithURL = api.getFilesMd('src/new_directory/toRead.md');
     const fileWithoutURL = api.readFile('src/new_directory/sub_dir/without_url.md');
     const arrLinks = ['https://github.com/paolataboada/LIM015-md-links',
                       'https://es.wikipedia.org/wiki/Markdown',
                       'https://nodejs.org/']
-    expect(api.findLinks(fileWithURL)).toEqual(arrLinks)
-    expect(api.findLinks(fileWithoutURL)).toBe('No se encontraron links en el archivo')
+    expect(api.fetchLinks).toEqual(arrLinks)
+    // expect(api.findLinks(fileWithoutURL)).toBe('No se encontraron links en el archivo')
   });
 });
 
+// describe('fetchStatus', () => {
+//   it('Debería guardar solo archivos md en un array', () => {
+//     const fileWithURL = api.getFilesMd('src/new_directory/toRead.md');
+//     const fileWithoutURL = api.readFile('src/new_directory/sub_dir/without_url.md');
+//     const arrLinks = ['https://github.com/paolataboada/LIM015-md-links',
+//                       'https://es.wikipedia.org/wiki/Markdown',
+//                       'https://nodejs.org/']
+//     expect(api.findLinks(fileWithURL)).toEqual(arrLinks)
+//     expect(api.findLinks(fileWithoutURL)).toBe('No se encontraron links en el archivo')
+//   });
+// });

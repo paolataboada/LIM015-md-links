@@ -1,17 +1,17 @@
 const fetch = require('node-fetch')
-
+    
 fetch('https://www.youtube.com/watch?v=zT5yR2E-GGU&ab_channel=MitoCode')
     .then((res) => {
         // console.log(res.headers.get('set-cookie'));
         // console.log(res.headers.raw()['set-cookie']);
-        // console.log(res.ok);
+        // console.log(res.ok); // ==> res.status >= 200 && res.status < 300
         // console.log(res.status);
-        // console.log(res.statusText);
+        // console.log(res.statusText); // error: MyCustomError(res.statusText)
         // console.log(res.url);
-    });
+    })
 
-console.log(process.argv[1]);
-console.log(process.argv.slice(1));
+// console.log(process.argv[1]);
+// console.log(process.argv.slice(1));
 
 /* fetch('https://api.github.com/users/github')
     .then((res) => {
