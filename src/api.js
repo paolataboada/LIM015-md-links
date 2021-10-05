@@ -63,8 +63,6 @@ const getFilesMd = (path) => {
     }
 }
 // console.log('directorio:', getFilesMd(dir))
-// console.log('archivoMD_1:', getFilesMd(file))
-// console.log('archivoTXT:', getFilesMd(dif))
 
 // Expresión regular para validar una url
 const regExpLink = /https?:\/\/(www\.)?[A-z\d]+(\.[A-z]+)*(\/[A-z\?=&-\d]*)*/g;
@@ -102,29 +100,6 @@ const readFilesMd = (path) => {
 }
 // console.log(readFilesMd('src/new_directory'));
 
-const fetchLinks = (link) => {
-    const result = 
-    fetch(link.href).then((res) => {
-        const propertiesStatus = {
-            href: link.href,
-            text: link.text,
-            file: link.file,
-            stats: res.status,
-            case: res.ok ? 'ok' : 'fail'
-        }
-        return propertiesStatus
-        }).catch((err) => {
-            const propertiesStatus = {
-                href: link.href,
-                file: link.file,
-                stats: 400,
-                case: 'fail'
-            }
-            return propertiesStatus
-        })
-    return result
-}
-
 const fetchStatus = (path) => {
     const resultArray = readFilesMd(path);
     const arrayLinks = resultArray.map((link) => {
@@ -134,7 +109,7 @@ const fetchStatus = (path) => {
                 href: link.href,
                 text: link.text,
                 file: link.file,
-                stats: res.status,
+                status: res.status,
                 case: res.ok ? 'ok' : 'fail'
             }
             return propertiesStatus
@@ -142,7 +117,7 @@ const fetchStatus = (path) => {
                 const propertiesStatus = {
                     href: link.href,
                     file: link.file,
-                    stats: 400,
+                    status: 400,
                     case: 'fail',
                 }
                 return propertiesStatus
@@ -165,11 +140,5 @@ module.exports = {
     joinPath,
     getFilesMd,
     readFilesMd,
-    fetchLinks,
     fetchStatus
 }
-
-// console.log(65, process.cwd()); // will give you the current working directory.
-// console.log(66, __dirname); // return the path of the folder where the current JavaScript file resides.
-// console.log(67, __filename);
-

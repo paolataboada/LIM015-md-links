@@ -2,15 +2,14 @@
   "name": "@paolataboada/md-links",
   "version": "0.1.0",
   "description": "Este proyecto consiste en la creación de una herramienta de línea de comando (CLI) así como de una librería propia (o biblioteca - library) en JavaScript.",
-  "main": "index.js",
+  "main": "src/index.js",
+  "bin": "src/cli.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "jest --verbose --coverage",
-    "start": "node src/index.js",
-    "peticion": "node src/http.js",
-    "lectura": "node src/fs.js"
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",

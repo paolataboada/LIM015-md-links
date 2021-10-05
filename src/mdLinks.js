@@ -14,10 +14,13 @@ const mdLinks = (path, options = {}) => {
     });
 }
 // const result = mdLinks('C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory', {validate: false})
-const result = mdLinks('C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory', {validate: true})
+// const result = mdLinks('C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir', {validate: true})
+// const result = mdLinks('src/new_directory/toRead.md', {validate: true})
 
-result.then((res) => {
-    console.log(res);
-}).catch((err) => {
-    console.log(err);
-})
+// result.then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.log(err);
+// })
+
+module.exports = mdLinks
