@@ -16,9 +16,9 @@
     "url": "git+https://github.com/paolataboada/LIM015-md-links.git"
   },
   "keywords": [
-    "md-links",
-    "cli",
-    "api",
+    "node",
+    "links",
+    "markdown",
     "path",
     "status"
   ],
@@ -35,6 +35,8 @@
     "jest": "^27.2.0"
   },
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "chalk": "^4.1.2",
+    "node-fetch": "^2.6.0",
+    "yargs": "^17.2.1"
   }
 }

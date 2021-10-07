@@ -1,16 +1,6 @@
 const mdLinks = require('../src/mdLinks');
-const api = require('../src/api')
-
-/* global.fetch = jest.fn(() =>
-  Promise.resolve({
-    href: 'https://hbr.org/2020/04/empathy-starts-with-curiosity?language=es',
-    text: 'La empatía',
-    file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\sub_file.md',
-    status: 200,
-    case: 'ok'
-    // json: () => Promise.resolve({ rates: { CAD: 1.42 } }),
-  })
-); */
+const api = require('../src/api');
+const mock = require('../__mocks__/fetch.js');
 
 describe('pathExists', () => {
   it('Debería validar si la ruta existe', () => {
@@ -106,17 +96,19 @@ describe('readFilesMd', () => {
 describe('fetchStatus', () => {
   it('Realiza petición HTTP y guarda propiedades del link (status: 200)', () => {
     const response = [{
-                        href: 'https://hbr.org/2020/04/empathy-starts-with-curiosity?language=es',
-                        text: 'La empatía',
-                        file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\sub_file.md',
-                        status: 200,
-                        case: 'ok'
-                      }]
-    return api.fetchStatus('src/new_directory/sub_dir/sub_file.md').then((resProp) => {
-      // console.log(116, resProp);
-      expect(resProp).toEqual(response);
-    });
-  })
+      href: 'https://hbr.org/2020/04/empathy-starts-with-curiosity?language=es',
+      text: 'La empatía',
+      file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\sub_file.md',
+      status: 200,
+      case: 'ok'
+    }]
+    return expect(api.fetchStatus('src/new_directory/sub_dir/sub_file.md')).resolves.toEqual(response);
+    // console.log(mock().fetch);
+    // mock().fetch.mockResolvedValue(response);
+    // api.fetchStatus('src/new_directory/sub_dir/sub_file.md').then((resProp) => {
+    //   expect(resProp).toEqual(response);
+    // });
+  });
   it('Realiza petición HTTP y guarda propiedades del link (status: 400)', () => {
     const rejected = [{
                         href: 'https://app.creately.com/diagram/l7cKUOg4XC0/edit',
@@ -131,16 +123,13 @@ describe('fetchStatus', () => {
                         case: 'fail',
                         file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir\\inner_dir\\deep.md',
                       }]
-    return api.fetchStatus('src/new_directory/sub_dir/inner_dir/deep.md').then((rejProp) => {
-      // console.log(135, rejProp);
-      expect(rejProp).toEqual(rejected);
-    });
+    return expect(api.fetchStatus('src/new_directory/sub_dir/inner_dir/deep.md')).resolves.toEqual(rejected);
   })
 });
 
 describe('mdLinks', () => {
   it('Debería resolver un array de objetos (validate: true)', () => {
-    const resultmdLinks = [
+    const validateMdLinks = [
       {
         href: 'https://github.com/paolataboada/LIM015-md-links',
         text: 'GitHub Paola',
@@ -163,10 +152,34 @@ describe('mdLinks', () => {
         case: 'ok'
       }
     ]
-    mdLinks('src/new_directory/toRead.md', {validate: true})
+    return expect(mdLinks('src/new_directory/toRead.md', {validate: true})).resolves.toEqual(validateMdLinks);
+    /* mdLinks('src/new_directory/toRead.md', {validate: true})
     .then((resObj) => {
       // console.log(145, Promise.resolve(resObj));
       expect(resObj).toEqual(resultmdLinks)
-    })
+    }) */
+  });
+  it('Debería resolver un array de objetos (validate: false)', () => {
+    const noValidateMdLinks = [
+      {
+        href: 'https://github.com/paolataboada/LIM015-md-links',
+        text: 'GitHub Paola',
+        file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\toRead.md',
+      },
+      {
+        href: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\toRead.md',
+      },
+      {
+        href: 'https://nodejs.org/',
+        text: 'Node.js',
+        file: 'C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\toRead.md',
+      }
+    ]
+    return expect(mdLinks('src/new_directory/toRead.md', {validate: false})).resolves.toEqual(noValidateMdLinks);
+  });
+  it('Debería resolver que la ruta es inexistente', () => {
+    return expect(mdLinks('src/new_directory/unpath', {validate: true})).rejects.toBe('No existe la ruta');
   });
 });
