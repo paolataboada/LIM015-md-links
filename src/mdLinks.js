@@ -1,26 +1,28 @@
 const api = require('./api.js')
 
-const mdLinks = (path, options = {}) => {
+const md_links = (path, options = {}) => {
     return new Promise((resolve, reject) => {
-        if (!api.pathExists(path)) {
-            reject('No existe la ruta')
+        if (!api.path_exists(path)) {
+            reject('La ruta introducida no existe')
         } else {
             if (!options.validate) {
-                resolve(api.readFilesMd(path))
+                const valid_getproperties = api.get_mdfiles(path) !== 'Directorio vacío' ? api.get_properties(path) : 'Directorio vacío'
+                resolve(valid_getproperties)
             } else {
-                resolve(api.fetchStatus(path))
+                const valid_fetchstatus = api.get_mdfiles(path) !== 'Directorio vacío' ? api.fetch_status(path) : 'Directorio vacío'
+                resolve(valid_fetchstatus)
             }
         }
     });
 }
-// const result = mdLinks('C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory', {validate: false})
-// const result = mdLinks('C:\\Users\\TACNA\\Documents\\GitHub\\LIM015-md-links\\src\\new_directory\\sub_dir', {validate: true})
-// const result = mdLinks('src/new_directory/toRead.md', {validate: true})
 
+// const result = md_links('src/new_directory/sub_dir', {validate: false})
+// const result = md_links('src/new_directory/toRead.md', {validate: true})
+// const result = md_links('src/empty_dir', { validate: false })
 // result.then((res) => {
 //     console.log(res);
 // }).catch((err) => {
 //     console.log(err);
 // })
 
-module.exports = mdLinks
+module.exports = md_links

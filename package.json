@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "Este proyecto consiste en la creación de una herramienta de línea de comando (CLI) así como de una librería propia (o biblioteca - library) en JavaScript.",
   "main": "src/index.js",
-  "bin": "src/cli.js",
+  "bin": {
+    "md-links": "src/cli.js"
+  },
   "directories": {
     "test": "test"
   },
@@ -36,7 +38,6 @@
   },
   "dependencies": {
     "chalk": "^4.1.2",
-    "node-fetch": "^2.6.0",
-    "yargs": "^17.2.1"
+    "node-fetch": "^2.6.0"
   }
 }

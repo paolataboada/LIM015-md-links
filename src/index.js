@@ -4,4 +4,4 @@ module.exports = () => {
   // ...
 };
 
-console.log("hola desde la consola")
+// console.log("hola desde la consola")
