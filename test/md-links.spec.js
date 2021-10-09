@@ -2,6 +2,7 @@ const md_links = require('../src/mdLinks');
 const api = require('../src/api');
 const mock = require('../__mocks__/fetch.js');
 
+
 describe('path_exists', () => {
   it('Debería validar si la ruta existe', () => {
     expect(api.path_exists('src/new_directory/cheat.txt')).toBeTruthy()
@@ -110,11 +111,6 @@ describe('fetch_status', () => {
       case: 'ok'
     }]
     return expect(api.fetch_status('src/new_directory/sub_dir/sub_file.md')).resolves.toEqual(response);
-    // console.log(mock().fetch);
-    // mock().fetch.mockResolvedValue(response);
-    // api.fetch_status('src/new_directory/sub_dir/sub_file.md').then((resProp) => {
-    //   expect(resProp).toEqual(response);
-    // });
   });
   it('Realiza petición HTTP y guarda propiedades del link (status: 400)', () => {
     const rejected = [{
@@ -161,11 +157,6 @@ describe('md_links', () => {
       }
     ]
     return expect(md_links('src/new_directory/toRead.md', {validate: true})).resolves.toEqual(validateMdLinks);
-    /* md_links('src/new_directory/toRead.md', {validate: true})
-    .then((resObj) => {
-      // console.log(145, Promise.resolve(resObj));
-      expect(resObj).toEqual(resultmdLinks)
-    }) */
   });
   it('Debería resolver un array de objetos (validate: false)', () => {
     const noValidateMdLinks = [
