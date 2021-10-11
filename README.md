@@ -105,11 +105,11 @@ CLI) han sido implementados en JavaScript para ser ejecutados con Node.js.
 ## 4. Diagrama de Flujo del Proyecto
 ### API
 
-![Flowchart CLI](src\assets\api.jpg)
+![Flowchart CLI](src/assets/api.jpg)
 
 ### CLI
 
-![Flowchart CLI](src\assets\cli.jpg)
+![Flowchart CLI](src/assets/cli.jpg)
 
 ## 5. Instalación y uso
 
