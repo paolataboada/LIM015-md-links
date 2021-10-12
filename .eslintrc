@@ -4,5 +4,11 @@
   },
   "parserOptions": {
     "ecmaVersion": 8
+  },
+  "extends": "airbnbn-base",
+  "rules": {
+    "linebreak-style": 0,
+    "quotes": [2, "double"],
+    "indent": ["error", 4]
   }
 }
